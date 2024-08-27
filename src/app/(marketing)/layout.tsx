@@ -1,4 +1,4 @@
-import { Header } from "@/components";
+import { Footer, Header } from "@/components";
 
 type MarketinLayoutProps = {
   children: React.ReactNode;
@@ -11,6 +11,7 @@ export default function MarketingLayout({ children }: MarketinLayoutProps) {
       <main className="flex flex-col flex-1 items-center justify-center">
         {children}
       </main>
+      <Footer />
     </div>
   );
 }
