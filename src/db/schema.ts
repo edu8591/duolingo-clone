@@ -5,3 +5,6 @@ export const courses = pgTable("courses", {
   title: text("title").notNull(),
   imageSrc: text("image_src").notNull(),
 });
+
+export type InsertCourses = typeof courses.$inferInsert;
+export type SelectCourses = typeof courses.$inferSelect;
