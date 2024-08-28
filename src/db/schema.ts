@@ -2,7 +2,7 @@ import { integer, pgTable, serial, text } from "drizzle-orm/pg-core";
 
 export const courses = pgTable("courses", {
   id: serial("id").primaryKey(),
-  title: text("title").notNull(),
+  title: text("title").notNull().unique(),
   imageSrc: text("image_src").notNull(),
 });
 
