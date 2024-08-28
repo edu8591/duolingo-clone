@@ -6,3 +6,5 @@ export * from "./Sidebar";
 export * from "./MobileHeader";
 export * from "./Brand";
 export * from "./SidebarItem";
+export * from "./StickyWrapper";
+export * from "./FeedWrapper";
