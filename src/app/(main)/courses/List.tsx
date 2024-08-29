@@ -35,7 +35,7 @@ export const List = ({ courses, activeCourseId }: ListProps) => {
           title={course.title}
           imageSrc={course.imageSrc}
           onClick={handleClick}
-          disabled={false}
+          disabled={pending}
           active={course.id === activeCourseId}
         />
       ))}
