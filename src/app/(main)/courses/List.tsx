@@ -4,6 +4,7 @@ import { Card } from "./Card";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { upsertUserProgress } from "@/actions/user-progress";
+import { toast } from "sonner";
 
 interface ListProps {
   courses: SelectCourses[];
@@ -22,7 +23,7 @@ export const List = ({ courses, activeCourseId }: ListProps) => {
       return router.push("/learn");
     }
     startTransition(() => {
-      upsertUserProgress(id);
+      upsertUserProgress(id).catch(() => toast.error("something went wrong"));
     });
   };
 
