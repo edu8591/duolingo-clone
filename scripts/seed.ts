@@ -45,10 +45,41 @@ const main = async () => {
         unitId: units[0].id,
         order: 1,
       },
+    ]);
+
+    const lessons = await db.query.lessons.findMany();
+
+    await db.insert(schema.challenges).values([
       {
-        title: "Verbs",
-        unitId: units[0].id,
-        order: 2,
+        lessonId: lessons[0].id,
+        question: 'Which of this is "the man"?',
+        type: "SELECT",
+        order: 1,
+      },
+    ]);
+
+    const challenges = await db.query.challenges.findMany();
+    await db.insert(schema.challengeOptions).values([
+      {
+        challengeId: challenges[0].id,
+        imageSrc: "/images/man.svg",
+        correct: true,
+        text: "El hombre",
+        audioSrc: "/es_man.mp3",
+      },
+      {
+        challengeId: challenges[0].id,
+        imageSrc: "/images/woman.svg",
+        correct: false,
+        text: "La mujer",
+        audioSrc: "/es_woman.mp3",
+      },
+      {
+        challengeId: challenges[0].id,
+        imageSrc: "/images/robot.svg",
+        correct: false,
+        text: "El robot",
+        audioSrc: "/es_robot.mp3",
       },
     ]);
   } catch (error) {
