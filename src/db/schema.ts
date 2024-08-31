@@ -22,7 +22,7 @@ export const coursesRelations = relations(courses, ({ many }) => ({
 export const userProgress = pgTable("user_progress", {
   userId: text("user_id").primaryKey(),
   userName: text("user_name").notNull().default("user"),
-  userImageSrc: text("user_image_src").notNull().default("/images/mascot.png"),
+  userImageSrc: text("user_image_src").notNull().default("/images/mascot.svg"),
   activeCourseId: integer("active_course_id").references(() => courses.id, {
     onDelete: "cascade",
   }),

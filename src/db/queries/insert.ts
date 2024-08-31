@@ -17,7 +17,7 @@ export const insertUserProgress = async (
     userId,
     activeCourseId: id,
     userName: username || "User",
-    userImageSrc: userImageSrc || "/images/mascot.png",
+    userImageSrc: userImageSrc || "/images/mascot.svg",
   });
   revalidatePath("/courses");
   revalidatePath("/learn");
