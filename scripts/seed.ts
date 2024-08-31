@@ -45,6 +45,11 @@ const main = async () => {
         unitId: units[0].id,
         order: 1,
       },
+      {
+        title: "Verbs",
+        unitId: units[0].id,
+        order: 2,
+      },
     ]);
 
     const lessons = await db.query.lessons.findMany();
