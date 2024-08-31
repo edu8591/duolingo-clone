@@ -50,6 +50,46 @@ const main = async () => {
         unitId: units[0].id,
         order: 2,
       },
+      {
+        title: "Adjectives",
+        unitId: units[0].id,
+        order: 3,
+      },
+      {
+        title: "Present",
+        unitId: units[0].id,
+        order: 4,
+      },
+      {
+        title: "Past",
+        unitId: units[0].id,
+        order: 5,
+      },
+      {
+        title: "test",
+        unitId: units[0].id,
+        order: 6,
+      },
+      {
+        title: "test",
+        unitId: units[0].id,
+        order: 7,
+      },
+      {
+        title: "test",
+        unitId: units[0].id,
+        order: 8,
+      },
+      {
+        title: "test",
+        unitId: units[0].id,
+        order: 9,
+      },
+      {
+        title: "test",
+        unitId: units[0].id,
+        order: 10,
+      },
     ]);
 
     const lessons = await db.query.lessons.findMany();
