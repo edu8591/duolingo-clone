@@ -32,9 +32,6 @@ export const Unit = ({
         {lessons.map((lesson, i) => {
           const isCurrent = lesson.id === activeLesson?.id;
           const isLocked = !lesson.completed && !isCurrent;
-          // console.log("lesson completed:", lesson.completed);
-          // console.log("is current:", isCurrent);
-          // console.log(isLocked);
 
           return (
             <LessonButton
