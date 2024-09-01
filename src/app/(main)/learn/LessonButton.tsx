@@ -26,12 +26,10 @@ export const LessonButton = ({
 }: LessonButtonProps) => {
   const cycleLength = 8;
   const cycleIndex = index % cycleLength;
-  console.log("index:", index);
-  console.log(cycleIndex);
 
   let indentationLevel: number | undefined;
 
-  if (cycleIndex === 0) {
+  if (cycleIndex <= 2) {
     indentationLevel = cycleIndex;
   } else if (cycleIndex <= 4) {
     indentationLevel = 4 - cycleIndex;
@@ -98,7 +96,21 @@ export const LessonButton = ({
             </CircularProgressbarWithChildren>
           </div>
         ) : (
-          <div>something</div>
+          <Button
+            size="rounded"
+            variant={locked ? "locked" : "secondary"}
+            className="h-[70px] w-[70px] border-b-8"
+          >
+            <Icon
+              className={cn(
+                "h-10 w-10",
+                locked
+                  ? "fill-neutral-400 text-neutral-400 stroke-neutral-400"
+                  : "fill-primary-foreground text-primary-foreground",
+                isCompleted && "fill-none stroke-[4]"
+              )}
+            />
+          </Button>
         )}
       </div>
     </Link>
