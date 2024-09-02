@@ -4,6 +4,7 @@ import { Header } from "./Header";
 import { SelectChallengeOptions, SelectChallenges } from "@/db";
 import { QuestionBubble } from "./QuestionBubble";
 import { Challenge } from "./Challenge";
+import { Footer } from "./Footer";
 
 type QuizProps = {
   initialLessonId: number;
@@ -73,6 +74,7 @@ export const Quiz = ({
           </div>
         </div>
       </div>
+      <Footer disabled={!selectedOption} status={status} onCheck={() => {}} />
     </>
   );
 };
