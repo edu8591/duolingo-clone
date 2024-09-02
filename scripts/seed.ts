@@ -110,21 +110,21 @@ const main = async () => {
         imageSrc: "/images/man.svg",
         correct: true,
         text: "El hombre",
-        audioSrc: "/es/man.mp3",
+        audioSrc: "/audio/es/man.mp3",
       },
       {
         challengeId: challenges[0].id,
         imageSrc: "/images/woman.svg",
         correct: false,
         text: "La mujer",
-        audioSrc: "/es/woman.mp3",
+        audioSrc: "/audio/es/woman.mp3",
       },
       {
         challengeId: challenges[0].id,
         imageSrc: "/images/robot.svg",
         correct: false,
         text: "El robot",
-        audioSrc: "/es/robot.mp3",
+        audioSrc: "/audio/es/robot.mp3",
       },
     ]);
   } catch (error) {
