@@ -1,10 +1,12 @@
 "use client";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { Header } from "./Header";
 import { SelectChallengeOptions, SelectChallenges } from "@/db";
 import { QuestionBubble } from "./QuestionBubble";
 import { Challenge } from "./Challenge";
 import { Footer } from "./Footer";
+import { upsertChallengeProgress } from "@/actions/challenge-progress";
+import { toast } from "sonner";
 
 type QuizProps = {
   initialLessonId: number;
@@ -23,6 +25,8 @@ export const Quiz = ({
   initialPercentage,
   userSubscription,
 }: QuizProps) => {
+  const [pending, startTransition] = useTransition();
+
   const [hearts, setHearts] = useState(initialHearts);
   const [percentage, setPercentage] = useState(initialPercentage);
   const [challenges] = useState(initialLessonChallenges);
@@ -41,10 +45,57 @@ export const Quiz = ({
       ? "Select the correct meaning"
       : challenge.question;
 
+  const onNext = () => {
+    setActiveIndex((current) => current + 1);
+  };
+
   const handleSelect = (optionId: number) => {
     if (status === "none") {
       setSelectedOption(optionId);
     } else return;
+  };
+
+  const onContinue = () => {
+    if (!selectedOption) return;
+    if (status === "wrong") {
+      setStatus("none");
+      setSelectedOption(undefined);
+      return;
+    }
+
+    if (status === "correct") {
+      onNext();
+      setStatus("none");
+      setSelectedOption(undefined);
+      return;
+    }
+    const correctOption = options.find((option) => option.correct);
+
+    if (!correctOption) return;
+
+    if (correctOption && correctOption.id === selectedOption) {
+      startTransition(() => {
+        upsertChallengeProgress(challenge.id)
+          .then((response) => {
+            if (response?.error === "hearts") {
+              console.error("Missing Hearts");
+            }
+            setStatus("correct");
+            setPercentage((prev) => prev + 100 / challenges.length);
+
+            // this is a practice
+            if (initialPercentage === 100) {
+              setHearts((prev) => Math.min(prev + 1, 5));
+            }
+          })
+          .catch((error) => {
+            toast.error("Something went wrong please try again");
+          });
+      });
+    } else {
+      console.error("IncorrectOption");
+      setStatus("wrong");
+    }
   };
 
   return (
@@ -74,7 +125,7 @@ export const Quiz = ({
           </div>
         </div>
       </div>
-      <Footer disabled={!selectedOption} status={status} onCheck={() => {}} />
+      <Footer disabled={!selectedOption} status={status} onCheck={onContinue} />
     </>
   );
 };
