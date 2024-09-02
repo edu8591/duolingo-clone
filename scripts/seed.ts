@@ -97,7 +97,7 @@ const main = async () => {
     await db.insert(schema.challenges).values([
       {
         lessonId: lessons[0].id,
-        question: 'Which of this is "the man"?',
+        question: 'Which of these is "the man"?',
         type: "SELECT",
         order: 1,
       },
