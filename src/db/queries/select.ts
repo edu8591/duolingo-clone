@@ -1,9 +1,10 @@
 import { cache } from "react";
 import { db } from "@db";
 import { auth } from "@clerk/nextjs/server";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import {
   challengeProgress,
+  challenges,
   courses,
   lessons,
   SelectCourses,
@@ -191,3 +192,27 @@ export const getLessonPercentage = cache(async () => {
   );
   return percentage;
 });
+
+export const getChallengeById = async (challengeId: number) => {
+  const challenge = await db.query.challenges.findFirst({
+    where: eq(challenges.id, challengeId),
+  });
+
+  if (!challenge) throw new Error("Challenge not found");
+
+  return challenge;
+};
+
+export const getExistingChallengeProgressById = async (
+  challengeId: number,
+  userId: string
+) => {
+  const existingChallengeProgress = await db.query.challengeProgress.findFirst({
+    where: and(
+      eq(challengeProgress.userId, userId),
+      eq(challengeProgress.challengeId, challengeId)
+    ),
+  });
+
+  return existingChallengeProgress;
+};
