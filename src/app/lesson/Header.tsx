@@ -1,4 +1,7 @@
+"use client";
+
 import { Progress } from "@/components";
+import { useExitModal } from "@/store/useExitModal";
 import { InfinityIcon, X } from "lucide-react";
 import Image from "next/image";
 
@@ -13,10 +16,11 @@ export const Header = ({
   percentage,
   hasActiveSubscription,
 }: HeaderProps) => {
+  const { open } = useExitModal();
   return (
     <header className="lg:pt-[50px] pt-[20px] px-10 flex gap-x-7 items-center justify-between max-w-[1140px] mx-auto w-full">
       <X
-        onClick={() => {}}
+        onClick={open}
         className="text-slate-500 hover:opacity-75 transition cursor-pointer"
       />
       <Progress value={percentage} />
