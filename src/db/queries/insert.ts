@@ -1,4 +1,4 @@
-import { db } from "@db";
+import { db, getChallengeById } from "@db";
 import { auth } from "@clerk/nextjs/server";
 import { challengeProgress, SelectUserProgress, userProgress } from "../schema";
 import { revalidatePath } from "next/cache";
@@ -74,4 +74,23 @@ export const createChallengeProgress = async (
     userId,
     completed: true,
   });
+};
+
+export const reduceUserProgressHearts = async (
+  hearts: number,
+  userId: string,
+  lessonId: number
+) => {
+  await db
+    .update(userProgress)
+    .set({
+      hearts: Math.max(hearts - 1, 0),
+    })
+    .where(eq(userProgress.userId, userId));
+
+  revalidatePath("/shop");
+  revalidatePath("/learn");
+  revalidatePath("/quests");
+  revalidatePath("/leaderboard");
+  revalidatePath(`/lesson/${lessonId}`);
 };

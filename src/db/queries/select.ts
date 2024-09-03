@@ -216,3 +216,17 @@ export const getExistingChallengeProgressById = async (
 
   return existingChallengeProgress;
 };
+
+export const getExistingChallengeProgress = async (
+  userId: string,
+  challengeId: number
+) => {
+  const data = await db.query.challengeProgress.findFirst({
+    where: and(
+      eq(challengeProgress.userId, userId),
+      eq(challengeProgress.challengeId, challengeId)
+    ),
+  });
+
+  return data;
+};

@@ -1,6 +1,14 @@
 "use server";
 
-import { db, getCourseById, getUserProgress, insertUserProgress } from "@/db";
+import {
+  db,
+  getChallengeById,
+  getCourseById,
+  getExistingChallengeProgress,
+  getUserProgress,
+  insertUserProgress,
+  reduceUserProgressHearts,
+} from "@/db";
 import { userProgress } from "@/db/schema";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
@@ -32,4 +40,39 @@ export const upsertUserProgress = async (id: number) => {
     redirect("/learn");
   }
   await insertUserProgress(id, userId, user.firstName, user.imageUrl);
+};
+
+export const reduceHearts = async (
+  challengeId: number
+): Promise<{ error: "practice" | "hearts" } | void> => {
+  const { userId } = await auth();
+
+  if (!userId) throw new Error("Unauthorized");
+
+  const currentUserProgress = await getUserProgress();
+
+  if (!currentUserProgress) throw new Error("User process not found");
+
+  const challenge = await getChallengeById(challengeId);
+
+  if (!challenge) throw new Error("Challenge not found");
+
+  const existingChallengeProgress = await getExistingChallengeProgress(
+    userId,
+    challengeId
+  );
+
+  const isPractice = !!existingChallengeProgress;
+
+  if (isPractice) return { error: "practice" };
+
+  //todo handle subscription
+
+  if (currentUserProgress.hearts === 0) return { error: "hearts" };
+
+  await reduceUserProgressHearts(
+    currentUserProgress.hearts,
+    userId,
+    challenge.lessonId
+  );
 };
