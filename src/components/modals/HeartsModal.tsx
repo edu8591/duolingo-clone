@@ -37,7 +37,7 @@ export const HeartsModal = () => {
               src="/images/broken_heart.svg"
               height={80}
               width={80}
-              alt="sad monkey"
+              alt="broken heart"
             />
           </div>
           <DialogTitle className="text-center font-bold text-2xl">
@@ -62,7 +62,6 @@ export const HeartsModal = () => {
                 size="lg"
                 onClick={() => {
                   close();
-                  router.push("/learn");
                 }}
               >
                 No thanks
