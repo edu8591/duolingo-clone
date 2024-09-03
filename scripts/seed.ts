@@ -119,6 +119,12 @@ const main = async () => {
         type: "SELECT",
         order: 4,
       },
+      {
+        lessonId: lessons[1].id,
+        question: 'Which of these is "to run"?',
+        type: "SELECT",
+        order: 4,
+      },
     ]);
 
     const challenges = await db.query.challenges.findMany();
@@ -203,6 +209,20 @@ const main = async () => {
         correct: true,
         text: "El robot",
         audioSrc: "/audio/es/robot.mp3",
+      },
+      {
+        challengeId: challenges[4].id,
+        imageSrc: "/images/running_man.svg",
+        correct: true,
+        text: "Correr",
+        audioSrc: "/audio/es/running.mp3",
+      },
+      {
+        challengeId: challenges[4].id,
+        imageSrc: "/images/jumping_man.svg",
+        correct: true,
+        text: "Saltar",
+        audioSrc: "/audio/es/jumping.mp3",
       },
     ]);
   } catch (error) {
