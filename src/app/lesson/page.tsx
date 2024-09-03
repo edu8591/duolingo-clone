@@ -2,7 +2,7 @@ import { getLesson, getUserProgress } from "@/db";
 import { redirect } from "next/navigation";
 import { Quiz } from "./Quiz";
 
-export default async function LearnPage() {
+export default async function LessonPage() {
   const [lesson, userProgress] = await Promise.all([
     getLesson(),
     getUserProgress(),
@@ -19,7 +19,7 @@ export default async function LearnPage() {
       initialLessonChallenges={lesson.challenges}
       initialHearts={userProgress.hearts}
       initialPercentage={initialPercentage}
-      userSubscription={undefined}
+      userSubscription={undefined} //todo add userSubscription
     />
   );
 }
