@@ -4,6 +4,7 @@ import { challengeProgress, SelectUserProgress, userProgress } from "../schema";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { eq } from "drizzle-orm";
+import { POINTS_TO_REFILL_HEARTS } from "@/constants";
 
 export const insertUserProgress = async (
   id: number,
@@ -93,4 +94,21 @@ export const reduceUserProgressHearts = async (
   revalidatePath("/quests");
   revalidatePath("/leaderboard");
   revalidatePath(`/lesson/${lessonId}`);
+};
+
+export const refillUserHearts = async (
+  currentUserProgress: SelectUserProgress
+) => {
+  await db
+    .update(userProgress)
+    .set({
+      hearts: 5,
+      points: currentUserProgress.points - POINTS_TO_REFILL_HEARTS,
+    })
+    .where(eq(userProgress.userId, currentUserProgress.userId));
+
+  revalidatePath("/shop");
+  revalidatePath("/learn");
+  revalidatePath("/quests");
+  revalidatePath("/leaderboard");
 };

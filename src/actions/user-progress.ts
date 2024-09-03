@@ -1,5 +1,6 @@
 "use server";
 
+import { POINTS_TO_REFILL_HEARTS } from "@/constants";
 import {
   db,
   getChallengeById,
@@ -8,6 +9,7 @@ import {
   getUserProgress,
   insertUserProgress,
   reduceUserProgressHearts,
+  refillUserHearts,
 } from "@/db";
 import { userProgress } from "@/db/schema";
 import { auth, currentUser } from "@clerk/nextjs/server";
@@ -75,4 +77,18 @@ export const reduceHearts = async (
     userId,
     challenge.lessonId
   );
+};
+
+export const refillHearts = async () => {
+  const currentUserProgress = await getUserProgress();
+
+  if (!currentUserProgress) throw new Error("User progress not found");
+
+  if (currentUserProgress.hearts === 5)
+    throw new Error("Hearts are already full");
+
+  if (currentUserProgress.points < POINTS_TO_REFILL_HEARTS)
+    throw new Error("Not enough points to permform this action");
+
+  await refillUserHearts(currentUserProgress);
 };
