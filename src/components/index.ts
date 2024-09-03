@@ -9,3 +9,4 @@ export * from "./SidebarItem";
 export * from "./StickyWrapper";
 export * from "./FeedWrapper";
 export * from "./modals";
+export * from "./UserProgress";
