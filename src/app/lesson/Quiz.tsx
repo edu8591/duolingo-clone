@@ -1,5 +1,5 @@
 "use client";
-import { useState, useTransition } from "react";
+import { useCallback, useState, useTransition } from "react";
 import { Header } from "./Header";
 import { SelectChallengeOptions, SelectChallenges } from "@/db";
 import { QuestionBubble } from "./QuestionBubble";
@@ -8,6 +8,12 @@ import { Footer } from "./Footer";
 import { upsertChallengeProgress } from "@/actions/challenge-progress";
 import { toast } from "sonner";
 import { reduceHearts } from "@/actions/user-progress";
+import { useAudio, useWindowSize } from "react-use";
+import Image from "next/image";
+import { ResultCard } from "./ResultCard";
+import { useRouter } from "next/navigation";
+import Confetti from "react-confetti";
+import { FinishScreen } from "./FInishScreen";
 
 type QuizProps = {
   initialLessonId: number;
@@ -26,8 +32,23 @@ export const Quiz = ({
   initialPercentage,
   userSubscription,
 }: QuizProps) => {
+  // Audio files
+  const [correctAudio, _correct, correctControls] = useAudio({
+    src: "/audio/correct.wav",
+  });
+  const playCorrectSound = useCallback(() => {
+    correctControls.play();
+  }, [correctControls]);
+  const [incorrectAudio, _incorrect, incorrectControls] = useAudio({
+    src: "/audio/incorrect.wav",
+  });
+  const playIncorrectSound = useCallback(() => {
+    incorrectControls.play();
+  }, [incorrectControls]);
   const [pending, startTransition] = useTransition();
 
+  //state
+  const [lessonId] = useState(initialLessonId);
   const [hearts, setHearts] = useState(initialHearts);
   const [percentage, setPercentage] = useState(initialPercentage);
   const [challenges] = useState(initialLessonChallenges);
@@ -39,8 +60,20 @@ export const Quiz = ({
   });
   const [selectedOption, setSelectedOption] = useState<number | undefined>();
   const [status, setStatus] = useState<"correct" | "wrong" | "none">("none");
+
   const challenge = challenges[activeIndex];
   const options = challenge?.challengeOptions ?? [];
+
+  if (!challenge) {
+    return (
+      <FinishScreen
+        challenges={challenges}
+        hearts={hearts}
+        lessonId={lessonId}
+      />
+    );
+  }
+
   const title =
     challenge.type === "ASSIST"
       ? "Select the correct meaning"
@@ -82,6 +115,7 @@ export const Quiz = ({
               console.error("Missing Hearts");
             }
             setStatus("correct");
+            playCorrectSound();
             setPercentage((prev) => prev + 100 / challenges.length);
 
             // this is a practice
@@ -102,6 +136,7 @@ export const Quiz = ({
               return;
             }
             setStatus("wrong");
+            playIncorrectSound();
 
             if (!res?.error) {
               setHearts((prev) => Math.max(prev - 1, 0));
@@ -114,6 +149,8 @@ export const Quiz = ({
 
   return (
     <>
+      {correctAudio}
+      {incorrectAudio}
       <Header
         hearts={hearts}
         percentage={percentage}
