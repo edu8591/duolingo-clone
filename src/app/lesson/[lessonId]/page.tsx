@@ -1,4 +1,4 @@
-import { getLesson, getUserProgress } from "@/db";
+import { getLesson, getUserProgress, getUserSubscription } from "@/db";
 import { redirect } from "next/navigation";
 import { Quiz } from "../Quiz";
 
@@ -7,10 +7,12 @@ type LessonIdPageProps = {
 };
 export default async function LessonidPage({ params }: LessonIdPageProps) {
   const { lessonId } = params;
-  const [lesson, userProgress] = await Promise.all([
+  const [lesson, userProgress, userSubscription] = await Promise.all([
     getLesson(lessonId),
     getUserProgress(),
+    getUserSubscription(),
   ]);
+
   if (!lesson || !userProgress) redirect("/learn");
   const initialPercentage =
     (lesson.challenges.filter((challenge) => challenge.completed).length /
@@ -23,7 +25,7 @@ export default async function LessonidPage({ params }: LessonIdPageProps) {
       initialLessonChallenges={lesson.challenges}
       initialHearts={userProgress.hearts}
       initialPercentage={initialPercentage}
-      userSubscription={undefined} //todo add userSubscription
+      userSubscription={userSubscription} //todo add userSubscription
     />
   );
 }
