@@ -70,7 +70,6 @@ export const reduceHearts = async (
 
   if (isPractice) return { error: "practice" };
 
-  //todo handle subscription
   const userSubscription = await getUserSubscription();
   if (userSubscription?.isActive) return { error: "subscription" };
 

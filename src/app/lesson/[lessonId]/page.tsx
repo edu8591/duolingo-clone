@@ -25,7 +25,7 @@ export default async function LessonidPage({ params }: LessonIdPageProps) {
       initialLessonChallenges={lesson.challenges}
       initialHearts={userProgress.hearts}
       initialPercentage={initialPercentage}
-      userSubscription={userSubscription} //todo add userSubscription
+      userSubscription={userSubscription}
     />
   );
 }

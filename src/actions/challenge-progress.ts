@@ -19,7 +19,6 @@ export const upsertChallengeProgress = async (
   if (!userId) throw new Error("Unauthorized");
 
   const currentUserProgress = await getUserProgress();
-  //todo handle subscription query later
   const userSubscription = await getUserSubscription();
   if (!currentUserProgress) throw new Error("User progress not found");
 
@@ -33,7 +32,6 @@ export const upsertChallengeProgress = async (
   );
 
   const isPractice = !!existingChallengeProgress;
-  //todo not if user has subscription
 
   if (
     currentUserProgress.hearts === 0 &&
