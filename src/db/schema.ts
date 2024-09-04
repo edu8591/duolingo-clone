@@ -6,6 +6,7 @@ import {
   pgTable,
   serial,
   text,
+  timestamp,
 } from "drizzle-orm/pg-core";
 
 export const courses = pgTable("courses", {
@@ -135,6 +136,15 @@ export const challengeProgressRelations = relations(
   })
 );
 
+export const userSubscription = pgTable("user_subscription", {
+  id: serial("id").primaryKey(),
+  userId: text("user_id").notNull().unique(),
+  stripeCustomerId: text("stripe_customer_id").notNull().unique(),
+  stripeSubscriptionId: text("stripe_subscription_id").notNull().unique(),
+  stripePriceId: text("stripe_price_id").notNull(),
+  stripeCurrentPeriodEnd: timestamp("stripe_current_period_end").notNull(),
+});
+
 export type InsertCourses = typeof courses.$inferInsert;
 export type SelectCourses = typeof courses.$inferSelect;
 
@@ -155,3 +165,6 @@ export type SelectChallengeOptions = typeof challengeOptions.$inferSelect;
 
 export type InsertChallengeProgress = typeof challengeProgress.$inferInsert;
 export type SelectChallengeProgress = typeof challengeProgress.$inferSelect;
+
+export type selectUserSubscription = typeof userSubscription.$inferSelect;
+export type InsertUserSubscription = typeof userSubscription.$inferInsert;
