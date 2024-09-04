@@ -5,17 +5,10 @@ import {
   StickyWrapper,
   UserProgress,
 } from "@/components";
+import { quests } from "@/constants";
 import { getUserProgress, getUserSubscription } from "@/db";
 import Image from "next/image";
 import { redirect } from "next/navigation";
-
-const quests = [
-  { title: "Earn 20 xp", value: 20 },
-  { title: "Earn 50 xp", value: 50 },
-  { title: "Earn 100 xp", value: 100 },
-  { title: "Earn 500 xp", value: 500 },
-  { title: "Earn 1,000 xp", value: 1000 },
-];
 
 export default async function QuestsPage() {
   const [userProgress, userSubscription] = await Promise.all([
