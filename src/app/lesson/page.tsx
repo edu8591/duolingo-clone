@@ -21,7 +21,6 @@ export default async function LessonPage() {
       initialHearts={userProgress.hearts}
       initialPercentage={initialPercentage}
       userSubscription={userSubscription}
-      n
     />
   );
 }
