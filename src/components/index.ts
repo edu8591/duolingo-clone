@@ -11,3 +11,4 @@ export * from "./FeedWrapper";
 export * from "./modals";
 export * from "./UserProgress";
 export * from "./Promo";
+export * from "./Quests";
