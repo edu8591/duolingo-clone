@@ -10,3 +10,4 @@ export * from "./StickyWrapper";
 export * from "./FeedWrapper";
 export * from "./modals";
 export * from "./UserProgress";
+export * from "./Promo";
