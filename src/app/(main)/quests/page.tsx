@@ -1,6 +1,7 @@
 import {
   FeedWrapper,
   Progress,
+  Promo,
   StickyWrapper,
   UserProgress,
 } from "@/components";
@@ -35,6 +36,7 @@ export default async function QuestsPage() {
           hearts={userProgress.hearts}
           points={userProgress.points}
         />
+        {!isPro && <Promo />}
       </StickyWrapper>
       <FeedWrapper>
         <div className="flex flex-col items-center w-full">

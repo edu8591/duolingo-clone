@@ -1,4 +1,4 @@
-import { FeedWrapper, StickyWrapper } from "@/components";
+import { FeedWrapper, Promo, StickyWrapper } from "@/components";
 import { Header } from "./Header";
 import { UserProgress } from "@/components/UserProgress";
 import {
@@ -30,6 +30,7 @@ export default async function LearnPage() {
   }
 
   if (!courseProgress) redirect("/courses");
+  const isPro = !!userSubscription?.isActive;
 
   return (
     <div className="flex flex-row-reverse gap-[48px] px-6">
@@ -40,6 +41,7 @@ export default async function LearnPage() {
           points={userProgress.points}
           hasActiveSubscription={!!userSubscription?.isActive}
         />
+        {!isPro && <Promo />}
       </StickyWrapper>
       <FeedWrapper>
         <Header title={userProgress.activeCourse.title} />
