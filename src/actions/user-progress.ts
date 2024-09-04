@@ -7,6 +7,7 @@ import {
   getCourseById,
   getExistingChallengeProgress,
   getUserProgress,
+  getUserSubscription,
   insertUserProgress,
   reduceUserProgressHearts,
   refillUserHearts,
@@ -21,12 +22,13 @@ export const upsertUserProgress = async (id: number) => {
   const user = await currentUser();
   if (!userId || !user) throw new Error("Unauthorized");
 
-  const course = getCourseById(id);
+  const course = await getCourseById(id);
 
   if (!course) throw new Error("Course not found");
 
   //todo enable when units and lessons are added
-  // if(!course.units.length || !course.units[0].lessons.length) throw new Error("Course is empty");
+  if (!course.units.length || !course.units[0].lessons.length)
+    throw new Error("Course is empty");
 
   const existingUserProgress = await getUserProgress();
 
@@ -46,7 +48,7 @@ export const upsertUserProgress = async (id: number) => {
 
 export const reduceHearts = async (
   challengeId: number
-): Promise<{ error: "practice" | "hearts" } | void> => {
+): Promise<{ error: "practice" | "hearts" | "subscription" } | void> => {
   const { userId } = await auth();
 
   if (!userId) throw new Error("Unauthorized");
@@ -69,6 +71,8 @@ export const reduceHearts = async (
   if (isPractice) return { error: "practice" };
 
   //todo handle subscription
+  const userSubscription = await getUserSubscription();
+  if (userSubscription?.isActive) return { error: "subscription" };
 
   if (currentUserProgress.hearts === 0) return { error: "hearts" };
 
