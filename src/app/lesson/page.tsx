@@ -20,7 +20,8 @@ export default async function LessonPage() {
       initialLessonChallenges={lesson.challenges}
       initialHearts={userProgress.hearts}
       initialPercentage={initialPercentage}
-      userSubscription={!!userSubscription?.isActive} //todo add userSubscription
+      userSubscription={userSubscription}
+      n
     />
   );
 }

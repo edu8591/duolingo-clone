@@ -1,7 +1,11 @@
 "use client";
 import { useCallback, useState, useTransition } from "react";
 import { Header } from "./Header";
-import { SelectChallengeOptions, SelectChallenges } from "@/db";
+import {
+  SelectChallengeOptions,
+  SelectChallenges,
+  selectUserSubscription,
+} from "@/db";
 import { QuestionBubble } from "./QuestionBubble";
 import { Challenge } from "./Challenge";
 import { Footer } from "./Footer";
@@ -25,7 +29,7 @@ type QuizProps = {
   })[];
   initialHearts: number;
   initialPercentage: number;
-  userSubscription: any;
+  userSubscription: (selectUserSubscription & { isActive: boolean }) | null;
 };
 export const Quiz = ({
   initialLessonId,
