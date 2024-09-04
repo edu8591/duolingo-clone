@@ -26,7 +26,7 @@ export const upsertUserProgress = async (id: number) => {
 
   if (!course) throw new Error("Course not found");
 
-  //todo enable when units and lessons are added
+  //todo check when current unit has no lessons
   if (!course.units.length || !course.units[0].lessons.length)
     throw new Error("Course is empty");
 
