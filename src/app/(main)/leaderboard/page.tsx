@@ -4,7 +4,7 @@ import {
   StickyWrapper,
   UserProgress,
 } from "@/components";
-import { getTopTenUsers, getUserProgress, getUserSubscription } from "@/db";
+import { getUserProgress, getUserSubscription } from "@/db";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import { UserList } from "./UserList";
