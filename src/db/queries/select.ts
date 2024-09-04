@@ -261,13 +261,16 @@ export const getUserSubscription = cache(async () => {
   return { ...data, isActive };
 });
 
-export const getTopTenusers = cache(
+export const getTopTenUsers = cache(
   async (): Promise<
     Pick<
       SelectUserProgress,
       "userId" | "userName" | "userImageSrc" | "points"
     >[]
   > => {
+    const { userId } = await auth();
+    if (!userId) return [];
+
     const data = await db.query.userProgress.findMany({
       orderBy: (userProgress, { desc }) => [desc(userProgress.points)],
       limit: 10,
