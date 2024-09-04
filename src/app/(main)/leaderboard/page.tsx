@@ -1,6 +1,4 @@
 import {
-  Avatar,
-  AvatarImage,
   FeedWrapper,
   Separator,
   StickyWrapper,
@@ -9,12 +7,12 @@ import {
 import { getTopTenUsers, getUserProgress, getUserSubscription } from "@/db";
 import Image from "next/image";
 import { redirect } from "next/navigation";
+import { UserList } from "./UserList";
 
 export default async function LeaderboardPage() {
-  const [userProgress, userSubscription, topTenUsers] = await Promise.all([
+  const [userProgress, userSubscription] = await Promise.all([
     getUserProgress(),
     getUserSubscription(),
-    getTopTenUsers(),
   ]);
   const isPro = !!userSubscription?.isActive;
   if (!userProgress || !userProgress.activeCourse) {
@@ -46,31 +44,7 @@ export default async function LeaderboardPage() {
             See where you stand among other learners in the community.
           </p>
           <Separator className="mb-5 h-0.5 rouded-full" />
-          {
-            //todo add UserList
-            topTenUsers.map((userProgress, index) => {
-              return (
-                <div
-                  key={userProgress.userId}
-                  className="flex items-center w-full p-2 px-4 rounded-xl hover:bg-gray-200/50"
-                >
-                  <p className="font-bold text-lime-700 mr-4"> {index + 1}</p>
-                  <Avatar className="border bg-green-500 h-12 w-12 ml-3 mr-6">
-                    <AvatarImage
-                      className="object-cover"
-                      src={userProgress.userImageSrc}
-                    />
-                  </Avatar>
-                  <p className="font-bold text-neutral-800 flex-1">
-                    {userProgress.userName}
-                  </p>
-                  <p className="text-muted-foreground">
-                    {userProgress.points} XP
-                  </p>
-                </div>
-              );
-            })
-          }
+          <UserList />
         </div>
       </FeedWrapper>
     </div>
