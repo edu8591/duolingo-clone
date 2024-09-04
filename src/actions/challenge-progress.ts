@@ -5,6 +5,7 @@ import {
   getChallengeById,
   getExistingChallengeProgressById,
   getUserProgress,
+  getUserSubscription,
   updateChallengProgressCompleted,
   updateUserProgress,
 } from "@/db";
@@ -19,7 +20,7 @@ export const upsertChallengeProgress = async (
 
   const currentUserProgress = await getUserProgress();
   //todo handle subscription query later
-
+  const userSubscription = await getUserSubscription();
   if (!currentUserProgress) throw new Error("User progress not found");
 
   const challenge = await getChallengeById(challengeId);
@@ -33,7 +34,12 @@ export const upsertChallengeProgress = async (
 
   const isPractice = !!existingChallengeProgress;
   //todo not if user has subscription
-  if (currentUserProgress.hearts === 0 && !isPractice)
+
+  if (
+    currentUserProgress.hearts === 0 &&
+    !isPractice &&
+    !userSubscription?.isActive
+  )
     return { error: "hearts" };
 
   if (isPractice) {
