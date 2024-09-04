@@ -1,6 +1,11 @@
 import { db, getChallengeById } from "@db";
 import { auth } from "@clerk/nextjs/server";
-import { challengeProgress, SelectUserProgress, userProgress } from "../schema";
+import {
+  challengeProgress,
+  SelectUserProgress,
+  userProgress,
+  userSubscription,
+} from "../schema";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { eq } from "drizzle-orm";
@@ -111,4 +116,34 @@ export const refillUserHearts = async (
   revalidatePath("/learn");
   revalidatePath("/quests");
   revalidatePath("/leaderboard");
+};
+
+export const createUserSubscription = async (
+  userId: string,
+  stripeSubscriptionId: string,
+  stripeCustomerId: string,
+  stripePriceId: string,
+  stripeCurrentPeriodEnd: Date
+) => {
+  await db.insert(userSubscription).values({
+    userId,
+    stripeSubscriptionId,
+    stripeCustomerId,
+    stripePriceId,
+    stripeCurrentPeriodEnd,
+  });
+};
+
+export const renewUserSubscription = async (
+  stripePriceId: string,
+  stripeCurrentPeriodEnd: Date,
+  stripeSubscriptionId: string
+) => {
+  await db
+    .update(userSubscription)
+    .set({
+      stripePriceId,
+      stripeCurrentPeriodEnd,
+    })
+    .where(eq(userSubscription.stripeSubscriptionId, stripeSubscriptionId));
 };
