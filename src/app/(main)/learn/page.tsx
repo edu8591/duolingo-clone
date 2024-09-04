@@ -1,4 +1,4 @@
-import { FeedWrapper, Promo, StickyWrapper } from "@/components";
+import { FeedWrapper, Promo, Quests, StickyWrapper } from "@/components";
 import { Header } from "./Header";
 import { UserProgress } from "@/components/UserProgress";
 import {
@@ -42,6 +42,7 @@ export default async function LearnPage() {
           hasActiveSubscription={!!userSubscription?.isActive}
         />
         {!isPro && <Promo />}
+        <Quests points={userProgress.points} />
       </StickyWrapper>
       <FeedWrapper>
         <Header title={userProgress.activeCourse.title} />

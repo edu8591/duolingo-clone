@@ -1,6 +1,7 @@
 import {
   FeedWrapper,
   Promo,
+  Quests,
   Separator,
   StickyWrapper,
   UserProgress,
@@ -30,6 +31,7 @@ export default async function LeaderboardPage() {
           points={userProgress.points}
         />
         {!isPro && <Promo />}
+        <Quests points={userProgress.points} />
       </StickyWrapper>
       <FeedWrapper>
         <div className="flex flex-col items-center w-full">

@@ -1,4 +1,10 @@
-import { FeedWrapper, Promo, StickyWrapper, UserProgress } from "@/components";
+import {
+  FeedWrapper,
+  Promo,
+  Quests,
+  StickyWrapper,
+  UserProgress,
+} from "@/components";
 import { getUserProgress, getUserSubscription } from "@/db";
 import Image from "next/image";
 import { redirect } from "next/navigation";
@@ -24,6 +30,7 @@ export default async function ShopPage() {
           points={userProgress.points}
         />
         {!isPro && <Promo />}
+        <Quests points={userProgress.points} />
       </StickyWrapper>
       <FeedWrapper>
         <div className="flex flex-col items-center w-full">
