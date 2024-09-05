@@ -10,6 +10,7 @@
     "db:studio": "npx drizzle-kit studio",
     "db:push": "npx drizzle-kit push",
     "db:seed": "tsx ./scripts/seed.ts",
+    "db:prod": "tsx ./scripts/seed.ts",
     "stripe:start": "stripe listen --forward-to localhost:3000/api/webhooks/stripe"
   },
   "dependencies": {
