@@ -1,16 +1,9 @@
-import {
-  deleteCourse,
-  deleteUnit,
-  getCourseById,
-  getUnitById,
-  updateCourse,
-  updateUnit,
-} from "@/db";
+import { deleteUnit, getUnitById, updateUnit } from "@/db";
 import { NextResponse } from "next/server";
 import { authorize } from "@/lib/admin";
 
 export const GET = async (
-  req: Request,
+  _req: Request,
   { params }: { params: { unitId: number } }
 ) => {
   authorize();
@@ -31,7 +24,7 @@ export const PUT = async (
 };
 
 export const DELETE = async (
-  req: Request,
+  _req: Request,
   { params }: { params: { unitId: number } }
 ) => {
   authorize();

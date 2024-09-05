@@ -1,5 +1,5 @@
-import { courses, db, getCourses, insertCourse } from "@/db";
-import { authorize, getIsAdmin } from "@/lib/admin";
+import { getCourses, insertCourse } from "@/db";
+import { authorize } from "@/lib/admin";
 import { NextResponse } from "next/server";
 
 export const GET = async () => {

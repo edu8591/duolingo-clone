@@ -1,9 +1,4 @@
-import {
-  getAllChallenges,
-  getAllUnits,
-  insertChallenge,
-  insertUnit,
-} from "@/db";
+import { getAllChallenges, insertChallenge } from "@/db";
 import { authorize } from "@/lib/admin";
 import { NextResponse } from "next/server";
 
