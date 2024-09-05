@@ -1,8 +1,17 @@
 import { db, getChallengeById } from "@db";
 import { auth } from "@clerk/nextjs/server";
 import {
+  challengeOptions,
   challengeProgress,
+  challenges,
+  courses,
+  lessons,
+  SelectChallengeOptions,
+  SelectChallenges,
+  SelectLessons,
+  SelectUnits,
   SelectUserProgress,
+  units,
   userProgress,
   userSubscription,
 } from "../schema";
@@ -146,4 +155,104 @@ export const renewUserSubscription = async (
       stripeCurrentPeriodEnd,
     })
     .where(eq(userSubscription.stripeSubscriptionId, stripeSubscriptionId));
+};
+
+export const insertCourse = async (body: {
+  title: string;
+  imageSrc: string;
+}) => {
+  return await db
+    .insert(courses)
+    .values({
+      ...body,
+    })
+    .returning();
+};
+
+export const insertUnit = async (body: SelectUnits) => {
+  const data = await db.insert(units).values(body).returning();
+  return data;
+};
+
+export const updateUnit = async (
+  body: Partial<SelectUnits>,
+  unitId: number
+) => {
+  const data = await db
+    .update(units)
+    .set(body)
+    .where(eq(units.id, unitId))
+    .returning();
+  return data;
+};
+
+export const deleteUnit = async (unitId: number) => {
+  return await db.delete(units).where(eq(units.id, unitId)).returning();
+};
+
+export const insertLesson = async (body: SelectLessons) => {
+  return await db.insert(lessons).values(body).returning();
+};
+
+export const updateLesson = async (
+  body: Omit<SelectLessons, "id">,
+  lessonId: number
+) => {
+  return await db
+    .update(lessons)
+    .set(body)
+    .where(eq(lessons.id, lessonId))
+    .returning();
+};
+
+export const deleteLesson = async (lessonId: number) => {
+  return await db.delete(lessons).where(eq(lessons.id, lessonId)).returning();
+};
+
+export const insertChallenge = async (body: Omit<SelectChallenges, "id">) => {
+  return await db.insert(challenges).values(body).returning();
+};
+
+export const updateChallenge = async (
+  body: Omit<SelectChallenges, "id">,
+  challengeId: number
+) => {
+  return await db
+    .update(challenges)
+    .set(body)
+    .where(eq(challenges.id, challengeId))
+    .returning();
+};
+
+export const deleteChallenge = async (challengeId: number) => {
+  return await db
+    .delete(challenges)
+    .where(eq(challenges.id, challengeId))
+    .returning();
+};
+
+export const insertChallengeOption = async (
+  body: Omit<SelectChallengeOptions, "id">
+) => {
+  return await db.insert(challengeOptions).values(body).returning();
+};
+
+export const updateChallengeOption = async (
+  body: Omit<SelectChallengeOptions, "id">,
+  challengeOptionid: number
+) => {
+  return await db
+    .update(challengeOptions)
+    .set(body)
+    .where(eq(challengeOptions.id, challengeOptionid))
+    .returning();
+};
+
+export const deleteChallengeOption = async (
+  challengeOptionId: SelectChallengeOptions["id"]
+) => {
+  return await db
+    .delete(challengeOptions)
+    .where(eq(challengeOptions.id, challengeOptionId))
+    .returning();
 };

@@ -3,11 +3,13 @@ import { db } from "@db";
 import { auth } from "@clerk/nextjs/server";
 import { and, eq } from "drizzle-orm";
 import {
+  challengeOptions,
   challengeProgress,
   challenges,
   courses,
   lessons,
   SelectCourses,
+  SelectUnits,
   SelectUserProgress,
   units,
   userProgress,
@@ -20,9 +22,9 @@ export const getCourses = cache(async () => {
   return data;
 });
 
-export const getCourseById = cache(async (id: SelectCourses["id"]) => {
+export const getCourseById = cache(async (courseId: SelectCourses["id"]) => {
   const data = await db.query.courses.findFirst({
-    where: eq(courses.id, id),
+    where: eq(courses.id, courseId),
     with: {
       units: {
         orderBy: (units, { asc }) => [asc(units.order)],
@@ -36,6 +38,21 @@ export const getCourseById = cache(async (id: SelectCourses["id"]) => {
   });
   return data;
 });
+
+export const updateCourse = async (
+  body: Pick<SelectCourses, "imageSrc" | "title">,
+  courseId: number
+) => {
+  return await db
+    .update(courses)
+    .set(body)
+    .where(eq(courses.id, courseId))
+    .returning();
+};
+
+export const deleteCourse = async (courseId: number) => {
+  return await db.delete(courses).where(eq(courses.id, courseId)).returning();
+};
 
 export const getUserProgress = cache(async () => {
   const { userId } = await auth();
@@ -97,6 +114,17 @@ export const getUnits = cache(async () => {
   return normalizedData;
 });
 
+export const getUnitById = async (unitId: number) => {
+  return await db.query.units.findFirst({
+    where: eq(units.id, unitId),
+  });
+};
+
+export const getAllUnits = async () => {
+  const data = await db.query.units.findMany();
+  return data;
+};
+
 export const getCourseProgress = cache(async () => {
   const { userId } = await auth();
 
@@ -143,6 +171,16 @@ export const getCourseProgress = cache(async () => {
     activeLessonId: firstUncompletedLesson?.id,
   };
 });
+
+export const getLessonById = async (lessonId: number) => {
+  return await db.query.lessons.findFirst({
+    where: eq(lessons.id, lessonId),
+  });
+};
+
+export const getAllLessons = async () => {
+  return await db.query.lessons.findMany();
+};
 
 export const getLesson = cache(async (id?: number) => {
   const { userId } = await auth();
@@ -285,3 +323,18 @@ export const getTopTenUsers = cache(
     return data;
   }
 );
+
+export const getAllChallenges = async () => {
+  return await db.query.challenges.findMany();
+};
+
+export const getAllChallegneOptions = async () => {
+  return await db.query.challengeOptions.findMany();
+};
+
+export const getChallengeOptionById = async (challengeOptionId: number) => {
+  const challenge = await db.query.challengeOptions.findFirst({
+    where: eq(challengeOptions.id, challengeOptionId),
+  });
+  return challenge;
+};
